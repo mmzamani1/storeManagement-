@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Products</h2>
+
+<form method="get">
+    <input type="text" name="q" placeholder="Search markets">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for product in object_list %}
+    <li>
+        {{ product.product_name }} - 
+        $<span class="product-price">{{ product.price }}</span> - 
+        Stock: <span class="product-stock" data-stock="{{ product.stock }}">{{ product.stock }}</span> - 
+        {{ product.market }} - {{ product.salesman }}
+        <a href="{% url 'product_edit' product.pk %}">Edit</a> |
+        <a href="{% url 'product_delete' product.pk %}">Delete</a> |
+        <a href="{% url 'product_addtoorder' product.pk %}">Add to Order</a>
+    </li>
+
+    <ul>
+        {% for orderitem in additional_objects %}
+        {% if orderitem.product == product %}
+        <li>
+            {{ orderitem.order }} - quantity {{ orderitem.quantity }}
+            <a href="{% url 'orderitem_delete' orderitem.pk %}">Delete</a>
+        </li>
+        {% endif %}
+        {% empty %}
+            <li>No orders available</li>
+        {% endfor %}
+    </ul>
+
+    {% endfor %}
+</ul>
+{% endblock %}

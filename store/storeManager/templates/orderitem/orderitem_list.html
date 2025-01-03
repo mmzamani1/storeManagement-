@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Orderitems</h2>
+<a href="{% url 'orderitem_add' %}">Add Items</a>
+<ul>
+    {% for orderitem in object_list %}
+    <li>
+        {{ orderitem.product }} - {{ orderitem.quantity }}
+        <a href="{% url 'orderitem_delete' orderitem.pk %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
